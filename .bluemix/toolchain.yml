@@ -30,6 +30,7 @@ services:
       repo_url: 'https://github.com/idsb3t1/KEEP-pipeline-tests-resources'
       type: link
       has_issues: false
+      enable_traceability: false
   build:
     service_id: pipeline
     parameters:
