@@ -67,7 +67,7 @@ metadata:
 spec:
   params:
     - name: repository
-      value: "https://github.com/idsb3t1/KEEP-pipeline-tests-resources"
+      value: "https://github.com/idsb3t2/KEEP-pipeline-tests-resources"
     - name: revision
       value: "hello-containers_master"
 ---
