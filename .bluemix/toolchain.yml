@@ -28,8 +28,9 @@ services:
   repo:
     service_id: githubpublic
     parameters:
-      repo_url: 'https://github.com/idsb3t1/KEEP-pipeline-tests-resources'
+      repo_url: 'https://github.com/idsb3t2/KEEP-pipeline-tests-resources'
       type: link
+      has_issues: false
       has_issues: false
   build:
     service_id: pipeline
