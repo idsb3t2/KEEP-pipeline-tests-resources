@@ -23,4 +23,5 @@ spec:
           echo "Secrets Manager Test"
           echo "================"
           echo "env: ${SECRETS_MANAGER_ENDPOINT}"
+          ibmcloud config --check-version=false
           ibmcloud login -a ${SECRETS_MANAGER_ENDPOINT} --apikey ${SECRETS_MANAGER_APIKEY} --no-region
