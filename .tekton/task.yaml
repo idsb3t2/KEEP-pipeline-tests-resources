@@ -23,4 +23,5 @@ spec:
           echo "Key Protect Test"
           echo "================"
           echo "env: ${KEY_PROTECT_ENDPOINT}"
+          ibmcloud config --check-version=false
           ibmcloud login -a ${KEY_PROTECT_ENDPOINT} --apikey ${KEY_PROTECT_APIKEY} --no-region
