@@ -1,0 +1,76 @@
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: fast-pipeline-template
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: fast-pipeline-run-$(uid)
+      spec:
+        pipelineRef:
+          name: fast-pipeline
+---
+apiVersion: tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: fast-listener
+spec:
+  triggers:
+    - bindings: []
+      template:
+        name: fast-pipeline-template
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: fast-pipeline
+spec:
+  tasks:
+    - name: task1
+      taskRef:
+        name: task1
+    - name: task2
+      taskSpec:
+        steps:
+          - name: step3
+            image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+            imagePullPolicy: IfNotPresent
+            command: ["bash", "-c"]
+            args:
+              - echo "[task2-step3][1]=====";
+                echo "::debug::[task2-step3][2]step three from task two, an inline task";
+                echo "[task2-step3][3]=====";
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: task1
+spec:
+  steps:
+    - name: step1
+      image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+      imagePullPolicy: IfNotPresent
+      command: ["bash", "-c"]
+      args:
+        - echo "[task1-step1][1]Using https://github.com/idsb3t2/KEEP-pipeline-tests-resources/tree/fast";
+          echo "[task1-step1][2]=====";
+          echo "[task1-step1][3]my message";
+          echo "::info::[task1-step1][4]my info message";
+          echo "::debug::[task1-step1][5]my debug message";
+          echo "::warning::[task1-step1][6]my warning message";
+          echo "::error::[task1-step1][7]my error message";
+          echo "::notice::[task1-step1][8]my notice message";
+          echo "[task1-step1][9]=====";
+    - name: step2
+      image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+      imagePullPolicy: IfNotPresent
+      command: ["bash", "-c"]
+      args:
+        - echo "[task1-step2][1]=====";
+          echo "::group::[task1-step2][2]start group";
+          echo "::info::[task1-step2][3]group info message";
+          echo "::debug::[task1-step2][4]group debug message";
+          echo "::endgroup::[task1-step2][5]";
+          echo "[task1-step2][6]=====";
