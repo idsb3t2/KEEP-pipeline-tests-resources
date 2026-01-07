@@ -35,6 +35,7 @@ spec:
       command: ["/bin/bash", "-c"]
       args:
         - echo "Tekton Properties Test Run";
+          sleep 10;
           echo "==========================";
           echo "env1 prop = $envTextProp1";
           echo "env2 prop = $envTextareaProp1";
