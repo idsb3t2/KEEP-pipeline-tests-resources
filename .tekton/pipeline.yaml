@@ -1,9 +1,79 @@
 apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: resources-pipeline-template
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: resources-pipeline-run-$(uid)
+      spec:
+        pipelineRef:
+          name: resources-pipeline
+---
+apiVersion: tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: resources-listener
+spec:
+  triggers:
+    - bindings: []
+      template:
+        name: resources-pipeline-template
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: resources-task1
+spec:
+  steps:
+    - name: task1-step-one
+      image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+      command: ["/bin/bash"]
+      args: ['-c', 'for i in {1..60}; do echo GONLOGGIN 1 && sleep 1; done;'] # tests that targetpath
+    - name: task1-step-two
+      image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+      command: ['bash']
+      args: ['-c', 'for i in {1..60}; do echo GONLOGGIN 2 && sleep 1; done;']
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: resources-task2
+spec:
+  steps:
+    - name: task2-step-one
+      image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+      command: ["/bin/bash"]
+      args: ['-c', 'date +"%T" && sleep 2']
+    - name: task2-step-two
+      image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+      command: ['bash']
+      args: ['-c', '[[ $((1 + RANDOM % 3)) == 1 ]] && echo Some logs || fail']
+---
+apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: sample-pipeline
+  name: resources-pipeline
 spec:
   tasks:
     - name: task1
       taskRef:
-        name: task1
+        name: resources-task1
+    - name: task2
+      runAfter: [task1]
+      taskRef:
+        name: resources-task2
+    - name: task3
+      runAfter: [task2]
+      taskSpec:
+        steps:
+          - name: task3-step-one
+            image: icr.io/continuous-delivery/pipeline/pipeline-base-image
+            imagePullPolicy: IfNotPresent
+            command: ["bash", "-c"]
+            args:
+              - echo "[task3-step1][1]=====";
+                echo "::debug::[task3-step1]step 1 from task 3, an inline task";
+                echo "[task3-step1][3]=====";
