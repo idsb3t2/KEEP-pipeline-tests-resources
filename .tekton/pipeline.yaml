@@ -31,11 +31,11 @@ spec:
     - name: task1-step-one
       image: icr.io/continuous-delivery/pipeline/pipeline-base-image
       command: ["/bin/bash"]
-      args: ['-c', 'for i in {1..60}; do echo GONLOGGIN 1 && sleep 1; done;'] # tests that targetpath
+      args: ['-c', 'for i in {1..2}; do echo GONLOGGIN 1 && sleep 1; done;'] # tests that targetpath
     - name: task1-step-two
       image: icr.io/continuous-delivery/pipeline/pipeline-base-image
       command: ['bash']
-      args: ['-c', 'for i in {1..60}; do echo GONLOGGIN 2 && sleep 1; done;']
+      args: ['-c', 'for i in {1..2}; do echo GONLOGGIN 2 && sleep 1; done;']
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Task
