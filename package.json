@@ -1,7 +1,7 @@
 {
-  "name": "greenwell-tekton",
+  "name": "keep-pipeline-tests-resources",
   "private": true,
   "version": "0.0.1",
-  "description": "Basic tekton pipeline for greenwell",
-  "author": "Brian Gleeson"
+  "description": "Tekton pipeline used for E2E testing of IBM Delivery Pipeline service",
+  "author": "idsb3t2@us.ib.com"
 }
