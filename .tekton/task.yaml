@@ -8,14 +8,31 @@ spec:
       image: icr.io/continuous-delivery/pipeline/pipeline-base-image
       command: ["bash", "-c"]
       args:
-        - echo "=======================";
-          echo "IBM Cloud - Status";
-          echo "Using https://github.com/idsb3t2/KEEP-pipeline-tests-resources.git";
-          echo "Endpoint - https://cloud.ibm.com";
-          echo "=======================";
-          sleep 60;
-          alive=$(curl -s -o /dev/null -L -w %{http_code} https://cloud.ibm.com);
-          if [ "$alive" == "200" ];
-          then echo "TEST PASS - 200"; exit 0;
-          else echo "TEST FAIL - $alive"; exit 1;
-          fi
+        - echo "===========================";
+          echo "Pipeline log streaming test";
+          echo "===========================";
+          sleep 5;
+          echo "Line 1 of streaming log";
+          sleep 5;
+          echo "Line 2 of streaming log";
+          sleep 5;
+          echo "Line 3 of streaming log";
+          sleep 5;
+          echo "Line 4 of streaming log";
+          sleep 5;
+          echo "Line 5 of streaming log";
+          sleep 5;
+          echo "Line 6 of streaming log";
+          sleep 5;
+          echo "Line 7 of streaming log";
+          sleep 5;
+          echo "Line 8 of streaming log";
+          sleep 5;
+          echo "Line 9 of streaming log";
+          sleep 5;
+          echo "Line 10 of streaming log";
+          sleep 5;
+          echo "Line 11 of streaming log";
+          sleep 5;
+          echo "Line 12 of streaming log";
+          exit 0;
